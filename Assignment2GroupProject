@@ -1,14 +1,16 @@
 import pygame
+import random
 vec = pygame.math.Vector2
 
 TITLE = "Game"
-WIDTH = 800
+WIDTH = 480
 HEIGHT = 600
 FPS = 60
 
 PLAYER_ACC = 0.5
 PLAYER_FRICTION = -0.12
 PLAYER_GRAVITY = 0.8
+PLAYER_JUMP = 20
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -17,6 +19,8 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 LIGHTBLUE = (0, 155, 155)
+
+FONT = 'Agency FB'
 
 PLATFORMS = [(0, HEIGHT - 40, WIDTH, 40),
              (WIDTH / 2 - 50, HEIGHT * 3 / 4, 100, 20),
@@ -41,7 +45,7 @@ class Player(pygame.sprite.Sprite):
         hits = pygame.sprite.spritecollide(self, self.game.platforms, False)
         self.rect.x -= 1
         if hits:
-            self.vel.y = -20
+            self.vel.y = -PLAYER_JUMP
 
     def update(self):
         self.acc = vec(0, PLAYER_GRAVITY)
@@ -76,6 +80,7 @@ class Game:
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
         self.running = True
+        self.font = pygame.font.match_font(FONT)
 
     def new(self):
         self.all_sprites = pygame.sprite.Group()
@@ -104,6 +109,27 @@ class Game:
             if hits:
                 self.player.pos.y = hits[0].rect.top
                 self.player.vel.y = 0
+        if self.player.rect.top <= HEIGHT / 4:
+            self.player.pos.y + abs(self.player.vel.y)
+            for platform in self.platforms:
+                platform.rect.y += abs(self.player.vel.y)
+                if platform.rect.top >= HEIGHT:
+                    platform.kill()
+        if self.player.rect.bottom > HEIGHT:
+            for sprite in self.all_sprites:
+                sprite.rect.y -= max(self.player.vel.y, 10)
+                if sprite.rect.bottom < 0:
+                    sprite.kill()
+        if len(self.platforms) == 0:
+            self.playing = False
+        while len(self.platforms) < 6:
+            width = random.randrange(50, 100)
+            p = Platform(random.randrange(0, WIDTH - width),
+                         random.randrange(-75, - 30),
+                         width, 20)
+            self.platforms.add(p)
+            self.all_sprites.add(p)
+
 
     def events(self):
         for event in pygame.event.get():
@@ -125,6 +151,13 @@ class Game:
 
     def show_go_screen(self):
         pass
+
+    def text(self, text, size, colour, x, y):
+        font = pygame.font.Font(self.font_name, size)
+        text_surface = font.render(text, True, colour)
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (x, y)
+        self.screen.blit(text_surface, text_rect)
 
 g = Game()
 g.show_start_screen()
