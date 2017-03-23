@@ -83,6 +83,7 @@ class Game:
         self.font = pygame.font.match_font(FONT)
 
     def new(self):
+        self.score = 0
         self.all_sprites = pygame.sprite.Group()
         self.platforms = pygame.sprite.Group()
         self.player = Player(self)
@@ -115,6 +116,7 @@ class Game:
                 platform.rect.y += abs(self.player.vel.y)
                 if platform.rect.top >= HEIGHT:
                     platform.kill()
+                    self.score += 10
         if self.player.rect.bottom > HEIGHT:
             for sprite in self.all_sprites:
                 sprite.rect.y -= max(self.player.vel.y, 10)
@@ -144,6 +146,7 @@ class Game:
     def draw(self):
         self.screen.fill(BLACK)
         self.all_sprites.draw(self.screen)
+        self.text(str(self.score), 22, WHITE, WIDTH / 2, 15)
         pygame.display.flip()
 
     def show_start_screen(self):
@@ -153,7 +156,7 @@ class Game:
         pass
 
     def text(self, text, size, colour, x, y):
-        font = pygame.font.Font(self.font_name, size)
+        font = pygame.font.Font(self.font, size)
         text_surface = font.render(text, True, colour)
         text_rect = text_surface.get_rect()
         text_rect.midtop = (x, y)
