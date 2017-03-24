@@ -22,6 +22,16 @@ POW_LAYER = 1
 MOB_LAYER = 2
 CLOUD_LAYER = 0
 
+# Button Properties
+BUTTON_1_X = 185
+BUTTON_1_Y = 350
+BUTTON_2_Y = 275
+BUTTON_3_Y = 313
+BUTTON_1_WIDTH = 100
+BUTTON_1_HEIGHT = 20
+TEXT_HEIGHT = 200
+FONT = 'Agency FB'
+
 # Starting platforms
 PLATFORM_LIST = [(0, HEIGHT - 60),
                  (WIDTH / 2 - 50, HEIGHT * 3 / 4 - 50),
