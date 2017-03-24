@@ -243,9 +243,9 @@ class Game:
 
 m = Menu()
 g = Game()
-m.display_menu()
-while g.running:
+run = True
+while run:
+    m.display_menu()
     g.new()
     g.show_go_screen()
-m.display_menu()
 pg.quit()
