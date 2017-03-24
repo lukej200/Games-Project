@@ -27,6 +27,7 @@ class Menu:
         self.left = "Left Arrow Key: Move Left"
         self.right = "Right Arrow Key: Move Right"
         self.space = "Space: Jump"
+        self.pause = "P: Pause"
         menu = True
         while menu:
             for event in pygame.event.get():
@@ -66,6 +67,8 @@ class Menu:
                               (TEXT_HEIGHT + (BUTTON_1_HEIGHT / 2)) - 22)
                     self.text(str(self.space), 20, WHITE, BUTTON_1_X + (BUTTON_1_WIDTH / 2),
                               (TEXT_HEIGHT + (BUTTON_1_HEIGHT / 2)) - 2)
+                    self.text(str(self.pause), 20, WHITE, BUTTON_1_X + (BUTTON_1_WIDTH / 2),
+                              (TEXT_HEIGHT + (BUTTON_1_HEIGHT / 2)) + 22)
             else:
                 pygame.draw.rect(self.screen, GREEN, (BUTTON_1_X, BUTTON_3_Y, BUTTON_1_WIDTH, BUTTON_1_HEIGHT))
 
