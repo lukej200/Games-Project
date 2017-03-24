@@ -9,7 +9,7 @@ class Menu:
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
         self.running = True
-        self.font = pygame.font.match_font(FONT)
+        self.font = pygame.font.match_font(FONT_NAME)
 
     def text(self, text, size, colour, x, y):
         font = pygame.font.Font(self.font, size)
