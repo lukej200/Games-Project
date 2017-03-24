@@ -153,6 +153,9 @@ class Game:
             if event.type == pg.KEYUP:
                 if event.key == pg.K_SPACE:
                     self.player.jump_cut()
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_p:
+                    self.pause()
 
     def draw(self):
         # Game Loop - draw
@@ -182,6 +185,33 @@ class Game:
         pg.display.flip()
         self.wait_for_key()
         pg.mixer.music.fadeout(500)
+        
+    def pause(self):
+        self.title = "Paused"
+        self.instructions = "Commands:"
+        self.cont = "Press C to continue"
+        self.quit_game = "Press Q to quit"
+        paused = True
+        while paused:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_c:
+                        paused = False
+                    elif event.key == pygame.K_q:
+                        pg.quit()
+                        quit()
+            self.screen.fill(BLACK)
+            self.draw_text(str(self.title), 80, WHITE, WIDTH / 2, 15)
+            self.draw_text(str(self.instructions), 20, WHITE, BUTTON_1_X + (BUTTON_1_WIDTH / 2),
+                      (TEXT_HEIGHT + (BUTTON_1_HEIGHT / 2)) - 62)
+            self.draw_text(str(self.cont), 20, WHITE, BUTTON_1_X + (BUTTON_1_WIDTH / 2),
+                      (TEXT_HEIGHT + (BUTTON_1_HEIGHT / 2)) - 42)
+            self.draw_text(str(self.quit_game), 20, WHITE, BUTTON_1_X + (BUTTON_1_WIDTH / 2),
+                      (TEXT_HEIGHT + (BUTTON_1_HEIGHT / 2)) - 22)
+            pygame.display.flip()
 
     def wait_for_key(self):
         waiting = True
