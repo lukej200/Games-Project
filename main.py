@@ -183,7 +183,7 @@ class Game:
         self.screen.fill(BGCOLOR)
         self.draw_text("GAME OVER", 48, WHITE, WIDTH / 2, HEIGHT / 4)
         self.draw_text("Score: " + str(self.score), 22, WHITE, WIDTH / 2, HEIGHT / 2)
-        self.draw_text("Press a key to play again", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
+        self.draw_text("Press a key to return to the main menu", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
         if self.score > self.highscore:
             self.highscore = self.score
             self.draw_text("NEW HIGH SCORE!", 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
