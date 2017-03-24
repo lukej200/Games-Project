@@ -37,9 +37,6 @@ class Menu:
             self.screen.fill(BLACK)
             self.text(str(self.title), 80, WHITE, WIDTH / 2, 15)
 
-            # RESUME HERE
-            # pygame.draw.rect(self.screen, GREEN, (BUTTON_1_X, BUTTON_2_Y, BUTTON_1_WIDTH, BUTTON_1_HEIGHT))
-            # pygame.draw.rect(self.screen, RED, (BUTTON_1_X, BUTTON_1_Y, BUTTON_1_WIDTH, BUTTON_1_HEIGHT))
             mouse = pygame.mouse.get_pos()
             click = pygame.mouse.get_pressed()
             if BUTTON_1_X + BUTTON_1_WIDTH > mouse[0] > BUTTON_1_X and BUTTON_2_Y + BUTTON_1_HEIGHT > mouse[1] > BUTTON_2_Y:
@@ -47,14 +44,15 @@ class Menu:
                 if click[0] == 1:
                     menu = False
             else:
-                pygame.draw.rect(self.screen, GREEN, (BUTTON_1_X, BUTTON_2_Y, BUTTON_1_WIDTH, BUTTON_1_HEIGHT))
+                pygame.draw.rect(self.screen, WHITE, (BUTTON_1_X, BUTTON_2_Y, BUTTON_1_WIDTH, BUTTON_1_HEIGHT))
             if BUTTON_1_X + BUTTON_1_WIDTH > mouse[0] > BUTTON_1_X and BUTTON_1_Y + BUTTON_1_HEIGHT > mouse[
                 1] > BUTTON_1_Y:
                 pygame.draw.rect(self.screen, LIGHTBLUE, (BUTTON_1_X, BUTTON_1_Y, BUTTON_1_WIDTH, BUTTON_1_HEIGHT))
                 if click[0] == 1:
-                    pygame.display.quit()
+                    pygame.quit()
+                    quit()
             else:
-                pygame.draw.rect(self.screen, RED, (BUTTON_1_X, BUTTON_1_Y, BUTTON_1_WIDTH, BUTTON_1_HEIGHT))
+                pygame.draw.rect(self.screen, WHITE, (BUTTON_1_X, BUTTON_1_Y, BUTTON_1_WIDTH, BUTTON_1_HEIGHT))
             if BUTTON_1_X + BUTTON_1_WIDTH > mouse[0] > BUTTON_1_X and BUTTON_3_Y + BUTTON_1_HEIGHT > mouse[
                 1] > BUTTON_3_Y:
                 pygame.draw.rect(self.screen, LIGHTBLUE, (BUTTON_1_X, BUTTON_3_Y, BUTTON_1_WIDTH, BUTTON_1_HEIGHT))
@@ -70,7 +68,7 @@ class Menu:
                     self.text(str(self.pause), 20, WHITE, BUTTON_1_X + (BUTTON_1_WIDTH / 2),
                               (TEXT_HEIGHT + (BUTTON_1_HEIGHT / 2)) + 22)
             else:
-                pygame.draw.rect(self.screen, GREEN, (BUTTON_1_X, BUTTON_3_Y, BUTTON_1_WIDTH, BUTTON_1_HEIGHT))
+                pygame.draw.rect(self.screen, WHITE, (BUTTON_1_X, BUTTON_3_Y, BUTTON_1_WIDTH, BUTTON_1_HEIGHT))
 
             self.text(str(self.begin), 20, BLACK, BUTTON_1_X + (BUTTON_1_WIDTH / 2),
                       (BUTTON_2_Y + (BUTTON_1_HEIGHT / 2)) - 12)
