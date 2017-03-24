@@ -5,11 +5,11 @@ from sprites import *
 from menu import *
 from os import path
 
-
 try:
     import simplegui
 except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
+
 
 class Game:
     def __init__(self):
@@ -40,12 +40,15 @@ class Game:
             self.cloud_images.append(pg.image.load(path.join(img_dir, 'cloud{}.png'.format(i))).convert())
         # load sounds
         self.snd_dir = path.join(self.dir, 'snd')
-     ##   self.jump_sound = pg.mixer.Sound(path.join(self.snd_dir, 'Jump33.ogg'))
-     ##   self.boost_sound = pg.mixer.Sound(path.join(self.snd_dir, 'Boost16.mp3'))
+        ##   self.jump_sound = pg.mixer.Sound(path.join(self.snd_dir, 'Jump33.ogg'))
+        ##   self.boost_sound = pg.mixer.Sound(path.join(self.snd_dir, 'Boost16.mp3'))
 
     def new(self):
         # start a new game
         self.score = 0
+        self.scoreText = "SCORE:"
+        self.lives = 100
+        self.lifeText = "LIFE:"
         self.all_sprites = pg.sprite.LayeredUpdates()
         self.platforms = pg.sprite.Group()
         self.powerups = pg.sprite.Group()
@@ -55,7 +58,7 @@ class Game:
         for plat in PLATFORM_LIST:
             Platform(self, *plat)
         self.mob_timer = 0
-    ##    pg.mixer.music.load(path.join(self.snd_dir, 'Happy Tune.mp3'))
+        ##    pg.mixer.music.load(path.join(self.snd_dir, 'Happy Tune.mp3'))
         for i in range(8):
             c = Cloud(self)
             c.rect.y += 500
@@ -63,7 +66,7 @@ class Game:
 
     def run(self):
         # Game Loop
-##        pg.mixer.music.play(loops=-1)
+        ##        pg.mixer.music.play(loops=-1)
         self.playing = True
         while self.playing:
             self.clock.tick(FPS)
@@ -84,7 +87,10 @@ class Game:
         # hit mobs?
         mob_hits = pg.sprite.spritecollide(self.player, self.mobs, False, pg.sprite.collide_mask)
         if mob_hits:
-            self.playing = False
+            if self.lives > 0:
+                self.lives -= 1
+            else:
+                self.playing = False
 
         # check if player hits a platform - only if falling
         if self.player.vel.y > 0:
@@ -95,7 +101,7 @@ class Game:
                     if hit.rect.bottom > lowest.rect.bottom:
                         lowest = hit
                 if self.player.pos.x < lowest.rect.right + 10 and \
-                   self.player.pos.x > lowest.rect.left - 10:
+                                self.player.pos.x > lowest.rect.left - 10:
                     if self.player.pos.y < lowest.rect.centery:
                         self.player.pos.y = lowest.rect.top
                         self.player.vel.y = 0
@@ -120,7 +126,7 @@ class Game:
         pow_hits = pg.sprite.spritecollide(self.player, self.powerups, True)
         for pow in pow_hits:
             if pow.type == 'boost':
-##                self.boost_sound.play()
+                ##                self.boost_sound.play()
                 self.player.vel.y = -BOOST_POWER
                 self.player.jumping = False
 
@@ -161,7 +167,10 @@ class Game:
         # Game Loop - draw
         self.screen.fill(BGCOLOR)
         self.all_sprites.draw(self.screen)
-        self.draw_text(str(self.score), 22, WHITE, WIDTH / 2, 15)
+        self.draw_text(str(self.score), 22, WHITE, WIDTH - (WIDTH / 1.15), 35)
+        self.draw_text(str(self.scoreText), 22, WHITE, WIDTH - (WIDTH / 1.15), 15)
+        self.draw_text(str(self.lives), 22, RED, WIDTH - 50, 35)
+        self.draw_text(str(self.lifeText), 22, RED, WIDTH - 50, 15)
         # *after* drawing everything, flip the display
         pg.display.flip()
 
@@ -185,7 +194,7 @@ class Game:
         pg.display.flip()
         self.wait_for_key()
         pg.mixer.music.fadeout(500)
-        
+
     def pause(self):
         self.title = "Paused"
         self.instructions = "Commands:"
@@ -206,11 +215,11 @@ class Game:
             self.screen.fill(BLACK)
             self.draw_text(str(self.title), 80, WHITE, WIDTH / 2, 15)
             self.draw_text(str(self.instructions), 20, WHITE, BUTTON_1_X + (BUTTON_1_WIDTH / 2),
-                      (TEXT_HEIGHT + (BUTTON_1_HEIGHT / 2)) - 62)
+                           (TEXT_HEIGHT + (BUTTON_1_HEIGHT / 2)) - 62)
             self.draw_text(str(self.cont), 20, WHITE, BUTTON_1_X + (BUTTON_1_WIDTH / 2),
-                      (TEXT_HEIGHT + (BUTTON_1_HEIGHT / 2)) - 42)
+                           (TEXT_HEIGHT + (BUTTON_1_HEIGHT / 2)) - 42)
             self.draw_text(str(self.quit_game), 20, WHITE, BUTTON_1_X + (BUTTON_1_WIDTH / 2),
-                      (TEXT_HEIGHT + (BUTTON_1_HEIGHT / 2)) - 22)
+                           (TEXT_HEIGHT + (BUTTON_1_HEIGHT / 2)) - 22)
             pygame.display.flip()
 
     def wait_for_key(self):
@@ -230,6 +239,7 @@ class Game:
         text_rect = text_surface.get_rect()
         text_rect.midtop = (x, y)
         self.screen.blit(text_surface, text_rect)
+
 
 m = Menu()
 g = Game()
