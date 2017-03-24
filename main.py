@@ -2,6 +2,7 @@ import pygame as pg
 import random
 from settings import *
 from sprites import *
+from menu import *
 from os import path
 
 
@@ -152,6 +153,9 @@ class Game:
             if event.type == pg.KEYUP:
                 if event.key == pg.K_SPACE:
                     self.player.jump_cut()
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_p:
+                    self.pause()
 
     def draw(self):
         # Game Loop - draw
@@ -160,19 +164,6 @@ class Game:
         self.draw_text(str(self.score), 22, WHITE, WIDTH / 2, 15)
         # *after* drawing everything, flip the display
         pg.display.flip()
-
-    def show_start_screen(self):
-        # game splash/start screen
-     ##   pg.mixer.music.load(path.join(self.snd_dir, 'Yippee.mp3'))
-    ##  pg.mixer.music.play(loops=-1)
-        self.screen.fill(BGCOLOR)
-        self.draw_text(TITLE, 48, WHITE, WIDTH / 2, HEIGHT / 4)
-        self.draw_text("Arrows to move, Space to jump", 22, WHITE, WIDTH / 2, HEIGHT / 2)
-        self.draw_text("Press a key to play", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
-        self.draw_text("High Score: " + str(self.highscore), 22, WHITE, WIDTH / 2, 15)
-        pg.display.flip()
-        self.wait_for_key()
-        pg.mixer.music.fadeout(500)
 
     def show_go_screen(self):
         # game over/continue
@@ -194,6 +185,33 @@ class Game:
         pg.display.flip()
         self.wait_for_key()
         pg.mixer.music.fadeout(500)
+        
+    def pause(self):
+        self.title = "Paused"
+        self.instructions = "Commands:"
+        self.cont = "Press C to continue"
+        self.quit_game = "Press Q to quit"
+        paused = True
+        while paused:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_c:
+                        paused = False
+                    elif event.key == pygame.K_q:
+                        pg.quit()
+                        quit()
+            self.screen.fill(BLACK)
+            self.draw_text(str(self.title), 80, WHITE, WIDTH / 2, 15)
+            self.draw_text(str(self.instructions), 20, WHITE, BUTTON_1_X + (BUTTON_1_WIDTH / 2),
+                      (TEXT_HEIGHT + (BUTTON_1_HEIGHT / 2)) - 62)
+            self.draw_text(str(self.cont), 20, WHITE, BUTTON_1_X + (BUTTON_1_WIDTH / 2),
+                      (TEXT_HEIGHT + (BUTTON_1_HEIGHT / 2)) - 42)
+            self.draw_text(str(self.quit_game), 20, WHITE, BUTTON_1_X + (BUTTON_1_WIDTH / 2),
+                      (TEXT_HEIGHT + (BUTTON_1_HEIGHT / 2)) - 22)
+            pygame.display.flip()
 
     def wait_for_key(self):
         waiting = True
@@ -213,8 +231,9 @@ class Game:
         text_rect.midtop = (x, y)
         self.screen.blit(text_surface, text_rect)
 
+m = Menu()
 g = Game()
-g.show_start_screen()
+m.display_menu()
 while g.running:
     g.new()
     g.show_go_screen()
