@@ -1,4 +1,4 @@
-TITLE = "Jumpy!"
+TITLE = "Assignment 2"
 WIDTH = 480
 HEIGHT = 600
 FPS = 60
