@@ -3,6 +3,12 @@ import random
 from settings import *
 from sprites import *
 from os import path
+import simplegui
+
+try:
+    import simplegui
+except ImportError:
+    import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 
 class Game:
     def __init__(self):
