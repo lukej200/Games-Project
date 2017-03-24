@@ -1,7 +1,8 @@
 import pygame as pg
 from settings import *
+from vectors import *
 from random import choice, randrange, uniform
-vec = pg.math.Vector2
+Vector = pg.math.Vector2
 
 class Spritesheet:
     # utility class for loading and parsing spritesheets
@@ -29,9 +30,9 @@ class Player(pg.sprite.Sprite):
         self.image = self.standing_frames[0]
         self.rect = self.image.get_rect()
         self.rect.center = (40, HEIGHT - 100)
-        self.pos = vec(40, HEIGHT - 100)
-        self.vel = vec(0, 0)
-        self.acc = vec(0, 0)
+        self.pos = Vector((40, HEIGHT - 100))
+        self.vel = Vector((0, 0))
+        self.acc = Vector((0, 0))
 
     def load_images(self):
         self.standing_frames = [self.game.spritesheet.get_image(614, 1063, 120, 191),
@@ -64,7 +65,7 @@ class Player(pg.sprite.Sprite):
 
     def update(self):
         self.animate()
-        self.acc = vec(0, PLAYER_GRAV)
+        self.acc = Vector((0, PLAYER_GRAV))
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT]:
             self.acc.x = -PLAYER_ACC
