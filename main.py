@@ -247,5 +247,5 @@ m.display_menu()
 while g.running:
     g.new()
     g.show_go_screen()
-
+m.display_menu()
 pg.quit()
