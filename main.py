@@ -13,7 +13,7 @@ except ImportError:
 
 class Game:
     def __init__(self):
-        # initialize game window, etc
+        # initialize game window etc
         pg.init()
         pg.mixer.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -31,17 +31,13 @@ class Game:
                 self.highscore = int(f.read())
             except:
                 self.highscore = 0
-        # load spritesheet image
+        # load spritesheet
         img_dir = path.join(self.dir, 'img')
         self.spritesheet = Spritesheet(path.join(img_dir, SPRITESHEET))
-        # cloud images
+        # clouds
         self.cloud_images = []
         for i in range(1, 4):
             self.cloud_images.append(pg.image.load(path.join(img_dir, 'cloud{}.png'.format(i))).convert())
-        # load sounds
-        self.snd_dir = path.join(self.dir, 'snd')
-        ##   self.jump_sound = pg.mixer.Sound(path.join(self.snd_dir, 'Jump33.ogg'))
-        ##   self.boost_sound = pg.mixer.Sound(path.join(self.snd_dir, 'Boost16.mp3'))
 
     def new(self):
         # start a new game
@@ -58,7 +54,6 @@ class Game:
         for plat in PLATFORM_LIST:
             Platform(self, *plat)
         self.mob_timer = 0
-        ##    pg.mixer.music.load(path.join(self.snd_dir, 'Happy Tune.mp3'))
         for i in range(8):
             c = Cloud(self)
             c.rect.y += 500
@@ -66,7 +61,6 @@ class Game:
 
     def run(self):
         # Game Loop
-        ##        pg.mixer.music.play(loops=-1)
         self.playing = True
         while self.playing:
             self.clock.tick(FPS)
@@ -122,15 +116,14 @@ class Game:
                     plat.kill()
                     self.score += 10
 
-        # if player hits powerup
+        # if player hits a powerup
         pow_hits = pg.sprite.spritecollide(self.player, self.powerups, True)
         for pow in pow_hits:
             if pow.type == 'boost':
-                ##                self.boost_sound.play()
                 self.player.vel.y = -BOOST_POWER
                 self.player.jumping = False
 
-        # Die!
+        # Player dies
         if self.player.rect.bottom > HEIGHT:
             for sprite in self.all_sprites:
                 sprite.rect.y -= max(self.player.vel.y, 10)
@@ -178,12 +171,10 @@ class Game:
         # game over/continue
         if not self.running:
             return
-        ##pg.mixer.music.load(path.join(self.snd_dir, 'Yippee.mp3'))
-        ##pg.mixer.music.play(loops=-1)
-        self.screen.fill(BGCOLOR)
+        self.screen.fill(BLACK)
         self.draw_text("GAME OVER", 48, WHITE, WIDTH / 2, HEIGHT / 4)
         self.draw_text("Score: " + str(self.score), 22, WHITE, WIDTH / 2, HEIGHT / 2)
-        self.draw_text("Press a key to return to the main menu", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
+        self.draw_text("Press a key to return to the main menu.", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
         if self.score > self.highscore:
             self.highscore = self.score
             self.draw_text("NEW HIGH SCORE!", 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
@@ -193,9 +184,10 @@ class Game:
             self.draw_text("High Score: " + str(self.highscore), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
         pg.display.flip()
         self.wait_for_key()
-        pg.mixer.music.fadeout(500)
+        self.running = False
 
     def pause(self):
+        # pauses the game
         self.title = "Paused"
         self.instructions = "Commands:"
         self.cont = "Press C to continue"
@@ -239,6 +231,7 @@ class Game:
         text_rect = text_surface.get_rect()
         text_rect.midtop = (x, y)
         self.screen.blit(text_surface, text_rect)
+
 
 m = Menu()
 g = Game()
