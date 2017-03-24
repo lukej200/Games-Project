@@ -2,6 +2,7 @@ import pygame as pg
 import random
 from settings import *
 from sprites import *
+from menu import *
 from os import path
 import simplegui
 
