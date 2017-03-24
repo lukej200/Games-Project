@@ -240,12 +240,13 @@ class Game:
         text_rect.midtop = (x, y)
         self.screen.blit(text_surface, text_rect)
 
-
 m = Menu()
 g = Game()
 run = True
 while run:
+    g.running = True
     m.display_menu()
-    g.new()
-    g.show_go_screen()
+    while g.running:
+        g.new()
+        g.show_go_screen()
 pg.quit()
